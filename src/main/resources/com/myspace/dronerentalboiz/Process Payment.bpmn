@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.omg.org/bpmn20" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:drools="http://www.jboss.org/drools" id="_n-WFAJapEeqD4e6KP6fNtg" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd http://www.omg.org/spec/DD/20100524/DC DC.xsd http://www.omg.org/spec/DD/20100524/DI DI.xsd " exporter="jBPM Process Modeler" exporterVersion="2.0" targetNamespace="http://www.omg.org/bpmn20">
+  <bpmn2:itemDefinition id="_cardItem" structureRef="com.myspace.dronerentalboiz.Card"/>
+  <bpmn2:signal id="_09d860c9-2992-3632-b68c-b516313527de" name="cardExpired"/>
+  <bpmn2:process id="DroneRentalBoiz.ProcessPayment" drools:packageName="com.myspace.dronerentalboiz" drools:version="1.0" drools:adHoc="false" name="Process Payment" isExecutable="true" processType="Public">
+    <bpmn2:property id="card" itemSubjectRef="_cardItem" name="card"/>
+    <bpmn2:sequenceFlow id="_E5EB4EE2-409E-4E66-8423-3F112D1F2065" name="yes" sourceRef="_8BAC8AAE-F86B-4F8F-A0E0-9F7282DCAE70" targetRef="_D706C790-2ACA-425D-B36F-89706AF21449">
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[yes]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="_n-WFAZapEeqD4e6KP6fNtg" language="http://www.java.com/java"><![CDATA[return KieFunctions.lessThan(card.getExpirationYear(), "2020");]]></bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="_DC128704-14A4-4B17-8363-04E0E2F8026E" sourceRef="_A62B9EBC-9BF1-457D-B4AF-02B250F73317" targetRef="_8BAC8AAE-F86B-4F8F-A0E0-9F7282DCAE70"/>
+    <bpmn2:sequenceFlow id="_90B23FDA-58F9-4320-8C02-029132296D33" name="no" sourceRef="_8BAC8AAE-F86B-4F8F-A0E0-9F7282DCAE70" targetRef="_CE86130D-D5C4-409E-B537-9F86F675581F">
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[no]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+    </bpmn2:sequenceFlow>
+    <bpmn2:startEvent id="_A62B9EBC-9BF1-457D-B4AF-02B250F73317">
+      <bpmn2:outgoing>_DC128704-14A4-4B17-8363-04E0E2F8026E</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:endEvent id="_D706C790-2ACA-425D-B36F-89706AF21449" name="Card is expired">
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[Card is expired]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customScope">
+          <drools:metaValue><![CDATA[project]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>_E5EB4EE2-409E-4E66-8423-3F112D1F2065</bpmn2:incoming>
+      <bpmn2:signalEventDefinition id="_n-WFApapEeqD4e6KP6fNtg" signalRef="_09d860c9-2992-3632-b68c-b516313527de"/>
+    </bpmn2:endEvent>
+    <bpmn2:exclusiveGateway id="_8BAC8AAE-F86B-4F8F-A0E0-9F7282DCAE70" drools:dg="_90B23FDA-58F9-4320-8C02-029132296D33" name="is expired?" gatewayDirection="Diverging" default="_90B23FDA-58F9-4320-8C02-029132296D33">
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[is expired?]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>_DC128704-14A4-4B17-8363-04E0E2F8026E</bpmn2:incoming>
+      <bpmn2:outgoing>_90B23FDA-58F9-4320-8C02-029132296D33</bpmn2:outgoing>
+      <bpmn2:outgoing>_E5EB4EE2-409E-4E66-8423-3F112D1F2065</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:endEvent id="_CE86130D-D5C4-409E-B537-9F86F675581F" name="Payment validated">
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[Payment validated]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>_90B23FDA-58F9-4320-8C02-029132296D33</bpmn2:incoming>
+    </bpmn2:endEvent>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="_n-WFA5apEeqD4e6KP6fNtg">
+    <bpmndi:BPMNPlane id="_n-WFBJapEeqD4e6KP6fNtg" bpmnElement="DroneRentalBoiz.ProcessPayment">
+      <bpmndi:BPMNShape id="shape__CE86130D-D5C4-409E-B537-9F86F675581F" bpmnElement="_CE86130D-D5C4-409E-B537-9F86F675581F">
+        <dc:Bounds height="56.0" width="56.0" x="425.0" y="202.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape__8BAC8AAE-F86B-4F8F-A0E0-9F7282DCAE70" bpmnElement="_8BAC8AAE-F86B-4F8F-A0E0-9F7282DCAE70">
+        <dc:Bounds height="56.0" width="56.0" x="285.0" y="202.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape__D706C790-2ACA-425D-B36F-89706AF21449" bpmnElement="_D706C790-2ACA-425D-B36F-89706AF21449">
+        <dc:Bounds height="56.0" width="56.0" x="415.0" y="70.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape__A62B9EBC-9BF1-457D-B4AF-02B250F73317" bpmnElement="_A62B9EBC-9BF1-457D-B4AF-02B250F73317">
+        <dc:Bounds height="56.0" width="56.0" x="165.0" y="202.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="edge_shape__8BAC8AAE-F86B-4F8F-A0E0-9F7282DCAE70_to_shape__CE86130D-D5C4-409E-B537-9F86F675581F" bpmnElement="_90B23FDA-58F9-4320-8C02-029132296D33">
+        <di:waypoint xsi:type="dc:Point" x="341.0" y="230.0"/>
+        <di:waypoint xsi:type="dc:Point" x="425.0" y="230.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_shape__A62B9EBC-9BF1-457D-B4AF-02B250F73317_to_shape__8BAC8AAE-F86B-4F8F-A0E0-9F7282DCAE70" bpmnElement="_DC128704-14A4-4B17-8363-04E0E2F8026E">
+        <di:waypoint xsi:type="dc:Point" x="193.0" y="230.0"/>
+        <di:waypoint xsi:type="dc:Point" x="285.0" y="230.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_shape__8BAC8AAE-F86B-4F8F-A0E0-9F7282DCAE70_to_shape__D706C790-2ACA-425D-B36F-89706AF21449" bpmnElement="_E5EB4EE2-409E-4E66-8423-3F112D1F2065">
+        <di:waypoint xsi:type="dc:Point" x="313.0" y="230.0"/>
+        <di:waypoint xsi:type="dc:Point" x="313.0" y="98.0"/>
+        <di:waypoint xsi:type="dc:Point" x="415.0" y="98.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  <bpmn2:relationship id="_n-WFBZapEeqD4e6KP6fNtg" type="BPSimData">
+    <bpmn2:extensionElements>
+      <bpsim:BPSimData>
+        <bpsim:Scenario xsi:type="bpsim:Scenario" id="default" name="Simulationscenario">
+          <bpsim:ScenarioParameters xsi:type="bpsim:ScenarioParameters"/>
+          <bpsim:ElementParameters xsi:type="bpsim:ElementParameters" elementRef="_A62B9EBC-9BF1-457D-B4AF-02B250F73317" id="_n-WFBpapEeqD4e6KP6fNtg">
+            <bpsim:TimeParameters xsi:type="bpsim:TimeParameters">
+              <bpsim:ProcessingTime xsi:type="bpsim:Parameter">
+                <bpsim:NormalDistribution mean="0.0" standardDeviation="0.0"/>
+              </bpsim:ProcessingTime>
+            </bpsim:TimeParameters>
+          </bpsim:ElementParameters>
+        </bpsim:Scenario>
+      </bpsim:BPSimData>
+    </bpmn2:extensionElements>
+    <bpmn2:source>_n-WFAJapEeqD4e6KP6fNtg</bpmn2:source>
+    <bpmn2:target>_n-WFAJapEeqD4e6KP6fNtg</bpmn2:target>
+  </bpmn2:relationship>
+</bpmn2:definitions>
